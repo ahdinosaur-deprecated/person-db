@@ -9,7 +9,7 @@
 
 #### prototype in progress
 
-People API of Open App Ecosystem
+People data domain of Open App Ecosystem
 
 ## vocab
 
