@@ -2,7 +2,7 @@
   "name": "open-app-person-domain",
   "version": "0.1.0",
   "description": "Person model domain",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
     "test": "mocha --recursive test"
   },
