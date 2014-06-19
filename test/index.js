@@ -1,6 +1,7 @@
 var expect = require('chai').expect;
 var level = require('level');
 var db = level('testdb', {valueEncoding: 'json'});
+var _ = require('lodash');
 
 var PersonDomain = require('../')({
   db: db,
@@ -20,12 +21,11 @@ describe("#Person", function () {
       PersonDomain.get(key, function (err, getPerson) {
         expect(err).to.not.exist;
         expect(getPerson.toJSON()).to.deep.equal(newPerson.toJSON());
-        PersonDomain.update(key, { name: "Bob" }, function (err, updatePerson) {
+        var updates = { name: "Bob" };
+        PersonDomain.update(id, updates, function (err, updatePerson) {
           expect(err).to.not.exist;
-          expect(updatePerson.toJSON()).to.deep.equal({
-            name: "Bob",
-            email: newPerson.email,
-          });
+          expect(updatePerson.toJSON())
+          .to.deep.equal(_.extend(newPerson.toJSON(), updates));
           done();
         });
       });
