@@ -12,7 +12,7 @@ describe("#Person", function () {
   it("should CRUD person model", function (done) {
     var newPerson = PersonDomain.create({
       name: "Bob Loblaw",
-      email: "bobloblawlawblog.com",
+      email: "bobloblaw@bobloblawslawblog.com",
     });
     newPerson.save(function (err) {
       expect(err).to.not.exist;
