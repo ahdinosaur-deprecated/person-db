@@ -5,7 +5,6 @@ var _ = require('lodash');
 
 var PersonDomain = require('../')({
   db: db,
-  name: "person",
 });
 
 describe("#Person", function () {
