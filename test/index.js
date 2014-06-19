@@ -15,9 +15,9 @@ describe("#Person", function () {
     });
     newPerson.save(function (err) {
       expect(err).to.not.exist;
-      var key = newPerson.key;
-      expect(key).to.exist;
-      PersonDomain.get(key, function (err, getPerson) {
+      var id = newPerson.id;
+      expect(id).to.exist;
+      PersonDomain.get(id, function (err, getPerson) {
         expect(err).to.not.exist;
         expect(getPerson.toJSON()).to.deep.equal(newPerson.toJSON());
         var updates = { name: "Bob" };
