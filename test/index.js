@@ -17,6 +17,7 @@ describe("#Person", function () {
       expect(err).to.not.exist;
       var id = newPerson.id;
       expect(id).to.exist;
+      expect(newPerson.type).to.equal("Person");
       PersonDomain.get(id, function (err, getPerson) {
         expect(err).to.not.exist;
         expect(getPerson.toJSON()).to.deep.equal(newPerson.toJSON());
