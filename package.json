@@ -1,29 +1,28 @@
 {
-  "name": "open-app-person-domain",
-  "version": "0.1.2",
-  "description": "Person model domain",
-  "main": "lib/index.js",
+  "name": "open-app-person-db",
+  "version": "0.2.0-pre.1",
+  "description": "Person model db",
+  "main": "index.js",
   "scripts": {
     "test": "mocha --recursive test"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/open-app/person-domain.git"
+    "url": "git://github.com/open-app/person-db.git"
   },
   "author": "open-app",
   "license": "AGPLv3",
   "bugs": {
-    "url": "https://github.com/open-app/person-domain/issues"
+    "url": "https://github.com/open-app/person-db/issues"
   },
-  "homepage": "https://github.com/open-app/person-domain",
+  "homepage": "https://github.com/open-app/person-db",
   "dependencies": {
-    "dulcimer": "^1.1.4",
-    "verymodel": "^1.10.1"
+    "dbjs-ext": "0.0.1"
   },
   "devDependencies": {
+    "mocha": "^1.20.1",
     "chai": "^1.9.1",
-    "level": "^0.18.0",
-    "lodash": "^2.4.1",
-    "mocha": "^1.20.1"
+    "dbjs": "0.0.3",
+    "lodash": "^2.4.1"
   }
 }

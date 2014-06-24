@@ -1,46 +1,50 @@
 var expect = require('chai').expect;
-var level = require('level');
-var db = level('testdb', {valueEncoding: 'json'});
+var DB = require('dbjs');
 var _ = require('lodash');
 
-var PersonDomain = require('../')({
-  db: db,
-});
+var bob = {
+  name: "Bob Loblaw",
+  email: "bobloblaw@bobloblawslawblog.com",
+};
 
 describe("#Person", function () {
-  it("should CRUD person model", function (done) {
-    var newPerson = PersonDomain.create({
-      name: "Bob Loblaw",
-      email: "bobloblaw@bobloblawslawblog.com",
-    });
-    newPerson.save(function (err) {
-      expect(err).to.not.exist;
-      var id = newPerson.id;
-      expect(id).to.exist;
-      expect(newPerson.type).to.equal("Person");
-      PersonDomain.get(id, function (err, getPerson) {
-        expect(err).to.not.exist;
-        expect(getPerson.toJSON()).to.deep.equal(newPerson.toJSON());
-        var updates = { name: "Bob" };
-        PersonDomain.update(id, updates, function (err, updatePerson) {
-          expect(err).to.not.exist;
-          expect(updatePerson.toJSON())
-          .to.deep.equal(_.extend(newPerson.toJSON(), updates));
-          done();
-        });
-      });
+  var db;
+
+  beforeEach(function () {
+    db = DB();
+
+    require('../')({
+      db: db,
     });
   });
-  
-  afterEach(function (done) {
-    // del all objects in db
-    db.createKeyStream()
-    .on('data', function (k) {
-      db.del(k);
-    })
-    .on('close', function () {
-      done();
-    });
+
+  it("should CRUD person", function () {
+    var fixture = _.clone(bob);
+    // create 
+    var person = db.Person(fixture);
+    expect(person).to.deep.equal(fixture);
+    expect(person.object.master.constructor)
+      .to.equal(db.Person);
+    var id = person.__id__;
+    expect(id).to.exist;
+    // get
+    var got = db.objects.getById(id);
+    expect(got).to.deep.equal(fixture);
+    expect(got.object.master.constructor)
+      .to.equal(db.Person);
+    // update
+    person.name = fixture.name = "Bob"
+    expect(person).to.deep.equal(fixture);
+    // get
+    var got2 = db.objects.getById(id);
+    expect(got2).to.deep.equal(fixture);
+    expect(got2.object.master.constructor)
+      .to.equal(db.Person);
+    // delete
+    db.objects.delete(person)
+    // get
+    expect(db.objects.getById(id))
+      .to.be.empty;
   });
 });
 
