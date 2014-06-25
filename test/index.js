@@ -7,6 +7,14 @@ var bob = {
   email: "bobloblaw@bobloblawslawblog.com",
 };
 
+var checkPerson = function (actual, expected) {
+  expect(actual.id).to.exist;
+  expect(actual.type).to.equal("Person");
+  _.each(expected, function (value, key) {
+    expect(actual).to.have.property(key, value);
+  });
+};
+
 describe("#Person", function () {
   var db;
 
@@ -22,22 +30,22 @@ describe("#Person", function () {
     var fixture = _.clone(bob);
     // create 
     var person = db.Person(fixture);
-    expect(person).to.deep.equal(fixture);
+    checkPerson(person, fixture);
     expect(person.object.master.constructor)
       .to.equal(db.Person);
     var id = person.__id__;
     expect(id).to.exist;
     // get
     var got = db.objects.getById(id);
-    expect(got).to.deep.equal(fixture);
+    checkPerson(person, fixture);
     expect(got.object.master.constructor)
       .to.equal(db.Person);
     // update
     person.name = fixture.name = "Bob"
-    expect(person).to.deep.equal(fixture);
+    checkPerson(person, fixture);
     // get
     var got2 = db.objects.getById(id);
-    expect(got2).to.deep.equal(fixture);
+    checkPerson(person, fixture);
     expect(got2.object.master.constructor)
       .to.equal(db.Person);
     // delete
