@@ -1,10 +1,11 @@
 {
-  "name": "open-app-person-db",
-  "version": "0.2.0-pre.1",
-  "description": "Person model db",
+  "name": "oa-person-db",
+  "version": "0.2.0-pre.2",
+  "description": "Person Bookshelf.js model",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --recursive test"
+    "test": "NODE_ENV=test npm run migrate && mocha --recursive test",
+    "migrate": "knex migrate:latest"
   },
   "repository": {
     "type": "git",
@@ -16,13 +17,13 @@
     "url": "https://github.com/open-app/person-db/issues"
   },
   "homepage": "https://github.com/open-app/person-db",
-  "dependencies": {
-    "dbjs-ext": "0.0.1"
-  },
+  "dependencies": {},
   "devDependencies": {
-    "mocha": "^1.20.1",
+    "bookshelf": "^0.7.6",
     "chai": "^1.9.1",
-    "dbjs": "0.0.3",
-    "lodash": "^2.4.1"
+    "knex": "^0.6.20",
+    "lodash": "^2.4.1",
+    "mocha": "^1.20.1",
+    "sqlite3": "^2.2.3"
   }
 }
