@@ -4,6 +4,8 @@
   "description": "Person model db",
   "main": "index.js",
   "scripts": {
+    "pulltestdb": "docker pull dockerfile/mongodb",
+    "testdb": "docker run -d -p 27017:27017 --name mongodb dockerfile/mongodb",
     "test": "mocha --recursive test"
   },
   "repository": {
@@ -17,7 +19,8 @@
   },
   "homepage": "https://github.com/open-app/person-db",
   "dependencies": {
-    "dbjs-ext": "0.0.1"
+    "dbjs-ext": "0.0.1",
+    "racer": "^0.6.0-alpha13"
   },
   "devDependencies": {
     "mocha": "^1.20.1",
