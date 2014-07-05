@@ -9,7 +9,7 @@ var bob = {
 
 var checkPerson = function (actual, expected) {
   expect(actual.id).to.exist;
-  expect(actual.type).to.equal("Person");
+  //expect(actual.type).to.equal("Person");
   _.each(expected, function (value, key) {
     expect(actual).to.have.property(key, value);
   });
@@ -21,41 +21,61 @@ describe("#Person", function () {
   var Person;
 
   beforeEach(function () {
-    // TODO clear database
+    return knex('people').del();
   });
 
   it("should load person model", function () {
     Person = require('../')(bookshelf);
   });
-/*
+
   it("should CRUD person", function () {
     var fixture = _.clone(bob);
     // create 
-    var person = db.Person(fixture);
-    checkPerson(person, fixture);
-    expect(person.object.master.constructor)
-      .to.equal(db.Person);
-    var id = person.__id__;
-    expect(id).to.exist;
-    // get
-    var got = db.objects.getById(id);
-    checkPerson(person, fixture);
-    expect(got.object.master.constructor)
-      .to.equal(db.Person);
-    // update
-    person.name = fixture.name = "Bob"
-    checkPerson(person, fixture);
-    // get
-    var got2 = db.objects.getById(id);
-    checkPerson(person, fixture);
-    expect(got2.object.master.constructor)
-      .to.equal(db.Person);
-    // delete
-    db.objects.delete(person)
-    // get
-    expect(db.objects.getById(id))
-      .to.be.empty;
+    var person = new Person(fixture);
+    var id;
+    // check new person
+    expect(person.toJSON()).to.deep.equal(fixture);
+    return person.save()
+    .then(function (savedPerson) {
+      id = person.id;
+      // check saved person
+      checkPerson(savedPerson.toJSON(), fixture);
+    })
+    .then(function () {
+      // get person from db
+      return new Person({ id: id }).fetch()
+    })
+    .then(function (fetchedPerson) {
+      // check fetched person
+      checkPerson(fetchedPerson.toJSON(), fixture);
+    })
+    .then(function () {
+      // update person in db
+      fixture.name = 'Bob';
+      person.set('name', 'Bob');
+      return person.save();
+    })
+    .then(function (updatedPerson) {
+      // check updated person
+      checkPerson(updatedPerson.toJSON(), fixture);
+    })
+    .then(function () {
+      // delete person in db
+      return person.destroy();
+    })
+    .then(function (destroyedPerson) {
+      expect(destroyedPerson.id).to.not.exist;
+      expect(destroyedPerson.toJSON()).to.be.empty;
+    })
+    .then(function () {
+      // get destroyed person from db
+      console.log(id);
+      return new Person({ id: id }).fetch()
+    })
+    .then(function (destroyedPerson) {
+      expect(destroyedPerson).to.not.exist;
+    })
+    ;
   });
-*/
 });
 
