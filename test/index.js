@@ -9,7 +9,7 @@ var bob = {
 
 var checkPerson = function (actual, expected) {
   expect(actual.id).to.exist;
-  //expect(actual.type).to.equal("Person");
+  expect(actual.type).to.equal("Person");
   _.each(expected, function (value, key) {
     expect(actual).to.have.property(key, value);
   });
@@ -32,18 +32,17 @@ describe("#Person", function () {
     var fixture = _.clone(bob);
     // create 
     var person = new Person(fixture);
-    var id;
     // check new person
     expect(person.toJSON()).to.deep.equal(fixture);
     return person.save()
     .then(function (savedPerson) {
-      id = person.id;
+      id = savedPerson.id;
       // check saved person
       checkPerson(savedPerson.toJSON(), fixture);
     })
     .then(function () {
       // get person from db
-      return new Person({ id: id }).fetch()
+      return Person.forge({ id: id }).fetch()
     })
     .then(function (fetchedPerson) {
       // check fetched person
@@ -69,7 +68,6 @@ describe("#Person", function () {
     })
     .then(function () {
       // get destroyed person from db
-      console.log(id);
       return new Person({ id: id }).fetch()
     })
     .then(function (destroyedPerson) {

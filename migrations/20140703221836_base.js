@@ -2,10 +2,10 @@
 
 exports.up = function(knex, Promise) {
   return knex.schema.createTable('people', function (t) {
-    t.uuid('id').primary();
-    t.json('name').notNullable();
-    t.json('email').unique().notNullable();
-    t.json('description').defaultTo("");
+    t.uuid('id').primary().notNull();
+    t.json('type').defaultTo("Person");
+    t.json('name').notNull();
+    t.json('email').unique().notNull();
     t.timestamps();
   });
 };
