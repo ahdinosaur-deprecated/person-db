@@ -6,7 +6,6 @@ exports.up = function(knex, Promise) {
     t.json('type').defaultTo("Person");
     t.json('name').notNull();
     t.json('email').unique().notNull();
-    t.timestamps();
   });
 };
 
