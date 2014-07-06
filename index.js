@@ -13,7 +13,17 @@ module.exports = function (Bookshelf) {
       };
     },
     memberOf: function () {
-      return this.morphMany('Group', 'member');
+      return this.morphMany('Member', 'member');
+    },
+    toJSON: function (options) {
+      options = options || {};
+      var json = Bookshelf.Model.prototype.toJSON.call(this, options);
+      if (!options.shallow && this.relations.memberOf) {
+        json.memberOf = this.related('memberOf').models.map(function (member) {
+          return member.toJSON({ related: 'memberOf' });
+        });
+      }
+      return json;
     },
   });
 };
