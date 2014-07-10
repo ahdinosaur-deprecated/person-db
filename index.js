@@ -25,5 +25,7 @@ module.exports = function (Bookshelf) {
       }
       return json;
     },
+  }, {
+    context: require('./context'),
   });
 };
